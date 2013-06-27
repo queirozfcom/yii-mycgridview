@@ -1,12 +1,8 @@
 <?php
 
 /**
- * CGridView class file.
+ * Slightly modified CGridView.
  *
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
- * @license http://www.yiiframework.com/license/
  */
 Yii::import('zii.widgets.grid.CGridView');
 
@@ -22,7 +18,7 @@ class MyCGridView extends CGridView {
     public function renderSummary() {
 
         /**
-         * by falmeida@3elos on 25/06/2013
+         * 25/06/2013
          * 
          * modifications made in order to preserve the header even when there are no results.
          * */
