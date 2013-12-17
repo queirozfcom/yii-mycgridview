@@ -14,6 +14,37 @@ class MyCGridView extends CGridView {
         'style' => 'padding-top:0px!important;padding-bottom:0px!important;'
     ];
     public $showHeaderWhenThereAreNoResults = false;
+    //popups break after ajax update, for some reason..
+    public $afterAjaxUpdate = 'js: function(id,data) { $("[rel=\"tooltip\"]").tooltip(); }';
+    public $clickableRows = false;
+    
+    private $assetsUrl;
+    
+    public function init() {
+
+        Yii::app()->getClientScript()->registerCSSFile($this->getAssetsUrl().'/style.css');
+        
+        if($this->clickableRows){
+            Yii::app()->getClientScript()->registerCSS("clickable-rows-for{$this->id}","
+                #{$this->id} tbody td{
+                    cursor: pointer;
+                }   
+            ");
+        }
+        
+        parent::init();
+    }
+
+    public function getAssetsUrl() {
+        if (!isset($this->assetsUrl)) {
+            $url = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('ext.widgets.MyCGridView.assets'));
+
+            $this->assetsUrl = $url;
+
+            return $this->assetsUrl;
+        } else
+            return $this->assetsUrl;
+    }
 
     public function renderSummary() {
 
@@ -21,6 +52,7 @@ class MyCGridView extends CGridView {
          * 25/06/2013
          * 
          * modifications made in order to preserve the header even when there are no results.
+         * This is meant to avoid annoying 'jumps' b/c the grid gets moved slightly up and down.
          * */
         if (!$this->showHeaderWhenThereAreNoResults)
             if (($count = $this->dataProvider->getItemCount()) <= 0)
